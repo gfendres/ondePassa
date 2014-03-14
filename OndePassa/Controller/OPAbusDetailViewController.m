@@ -9,12 +9,11 @@
 #import "OPAbusDetailViewController.h"
 #import "OPABusStop.h"
 #import "OPABusDepartures.h"
-
 #define CELL_STOP_NAME 1
 
 @interface OPAbusDetailViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *stopsTableView;
-@property (nonatomic,strong)NSMutableArray* stopsDataSource;
+@property (nonatomic,strong)NSMutableArray* stops;
 @property (weak, nonatomic) IBOutlet UILabel *weekDepartures;
 @property (weak, nonatomic) IBOutlet UILabel *sundayDepartures;
 @property (weak, nonatomic) IBOutlet UILabel *saturdayDepartures;
@@ -32,6 +31,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+	[OPABusServicesAPI instance].delegate = self;
 	[self loadData];
 	self.title = _route.longName;
 }
@@ -46,54 +46,14 @@
 
 -(void)loadStops
 {
-	_stopsDataSource = [NSMutableArray new];
-    [[AFHTTPRequestOperationManager AFRequest] POST:STOPS
-										 parameters:[self getParamteresWithRouteId:_route.identifier]
-											success:^(AFHTTPRequestOperation *operation, id responseObject) {
-												
-												for(NSDictionary *stopJSON in responseObject[@"rows"])
-												{
-													OPABusStop* busStop = [OPABusStop new];
-													busStop.identifier = [stopJSON[@"id"] integerValue];
-													busStop.name = stopJSON[@"name"];
-													busStop.sequence = [stopJSON[@"sequence"] integerValue];
-													
-													[_stopsDataSource addObject:busStop];
-												}
-												
-												[_stopsTableView reloadData];
-											}
-											failure:^(AFHTTPRequestOperation *operation, NSError *err) {
-												[UIAlertView showErrorWithMessage:err.domain];
-											}
-     ];
+	_stops = [NSMutableArray new];
+	[[OPABusServicesAPI instance] getStops:_route.identifier];
 }
 
 -(void)loadDepartures
 {
-
 	_departures = [NSMutableArray new];
-    [[AFHTTPRequestOperationManager AFRequest] POST:DEPARTURES
-										 parameters:[self getParamteresWithRouteId:_route.identifier]
-											success:^(AFHTTPRequestOperation *operation, id responseObject) {
-												
-												for(NSDictionary *departureJSON in responseObject[@"rows"])
-												{
-													OPABusDepartures* busDeparture = [OPABusDepartures new];
-													busDeparture.calendar = departureJSON[@"calendar"];
-													busDeparture.identifier = [departureJSON[@"id"] integerValue];
-													busDeparture.time = departureJSON[@"time"];
-													
-													[_departures addObject:busDeparture];
-												}
-												
-												[self organizeDepartures];
-												
-											}
-											failure:^(AFHTTPRequestOperation *operation, NSError *err) {
-												[UIAlertView showErrorWithMessage:err.domain];
-											}
-     ];
+	[[OPABusServicesAPI instance] getDepartures:_route.identifier];
 }
 
 -(void)organizeDepartures
@@ -101,9 +61,6 @@
 	[self initDepartureLabel:_weekDepartures withDayType:@"WEEKDAY"];
 	[self initDepartureLabel:_saturdayDepartures withDayType:@"SATURDAY"];
 	[self initDepartureLabel:_sundayDepartures withDayType:@"SUNDAY"];
-	
-	
-
 }
 
 -(void)initDepartureLabel:(UILabel*)departureLabel withDayType:(NSString*)dayType
@@ -133,10 +90,22 @@
 	}
 }
 
--(NSDictionary*)getParamteresWithRouteId:(int)routeId
-{
-	return @{@"params" : @{ @"routeId": [NSString stringWithFormat:@"%d",routeId] } };
+#pragma mark - OPABusServices Delegates
+
+-(void)getStopsSuccessful:(NSMutableArray *)dataSource{
+	_stops = dataSource;
+	[_stopsTableView reloadData];
 }
+
+-(void)getDeparturesSuccessful:(NSMutableArray *)dataSource{
+	_departures = dataSource;
+	[self organizeDepartures];
+}
+
+-(void)opaBusServiceAPIFailure:(NSString *)error{
+	[UIAlertView showErrorWithMessage:error];
+}
+
 
 #pragma mark - Table view data source
 
@@ -150,14 +119,14 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return _stopsDataSource.count;
+    return _stops.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"stopCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    OPABusStop *stop = (OPABusStop*)[_stopsDataSource objectAtIndex:indexPath.row];
+    OPABusStop *stop = (OPABusStop*)[_stops objectAtIndex:indexPath.row];
 	
 	UILabel* stopName = (UILabel*)[cell viewWithTag:CELL_STOP_NAME];
 	stopName.text = stop.name;

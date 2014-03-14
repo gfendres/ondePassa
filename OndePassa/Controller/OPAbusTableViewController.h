@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface OPAbusTableViewController : UITableViewController
+#import "OPABusServicesAPI.h"
+@interface OPAbusTableViewController : UITableViewController <OPABusServiceAPIDelegate>
 @property(nonatomic,strong)NSString* routeName;
 @end

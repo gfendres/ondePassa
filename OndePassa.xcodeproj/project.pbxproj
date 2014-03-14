@@ -52,6 +52,7 @@
 		D1A10A5918D1F67000C0BB84 /* searchBackground.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D1A10A5818D1F67000C0BB84 /* searchBackground.jpg */; };
 		D1A10A5C18D1F75800C0BB84 /* OPAbusSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D1A10A5B18D1F75800C0BB84 /* OPAbusSearchViewController.m */; };
 		D1A10A5F18D1FA5700C0BB84 /* UIAlertView+Error.m in Sources */ = {isa = PBXBuildFile; fileRef = D1A10A5E18D1FA5700C0BB84 /* UIAlertView+Error.m */; };
+		D1C1767918D356B200904B72 /* OPABusServicesAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D1C1767818D356B200904B72 /* OPABusServicesAPI.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +144,8 @@
 		D1A10A5B18D1F75800C0BB84 /* OPAbusSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OPAbusSearchViewController.m; path = Controller/OPAbusSearchViewController.m; sourceTree = "<group>"; };
 		D1A10A5D18D1FA5700C0BB84 /* UIAlertView+Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIAlertView+Error.h"; path = "Model/UIAlertView+Error.h"; sourceTree = "<group>"; };
 		D1A10A5E18D1FA5700C0BB84 /* UIAlertView+Error.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIAlertView+Error.m"; path = "Model/UIAlertView+Error.m"; sourceTree = "<group>"; };
+		D1C1767718D356B200904B72 /* OPABusServicesAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OPABusServicesAPI.h; path = Model/OPABusServicesAPI.h; sourceTree = "<group>"; };
+		D1C1767818D356B200904B72 /* OPABusServicesAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OPABusServicesAPI.m; path = Model/OPABusServicesAPI.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,6 +268,8 @@
 				D1A10A5618D13A9700C0BB84 /* OPABusDepartures.m */,
 				D1A10A5D18D1FA5700C0BB84 /* UIAlertView+Error.h */,
 				D1A10A5E18D1FA5700C0BB84 /* UIAlertView+Error.m */,
+				D1C1767718D356B200904B72 /* OPABusServicesAPI.h */,
+				D1C1767818D356B200904B72 /* OPABusServicesAPI.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -455,6 +460,7 @@
 				D1A10A5718D13A9700C0BB84 /* OPABusDepartures.m in Sources */,
 				D15CBF7518CFF51400E2EF88 /* UIButton+AFNetworking.m in Sources */,
 				D15CBF8418D0A4CA00E2EF88 /* OPARoutesCell.m in Sources */,
+				D1C1767918D356B200904B72 /* OPABusServicesAPI.m in Sources */,
 				D1A10A5418D10CD600C0BB84 /* OPABusStop.m in Sources */,
 				D15CBF7818CFF51400E2EF88 /* UIRefreshControl+AFNetworking.m in Sources */,
 				D15CBF7418CFF51400E2EF88 /* UIAlertView+AFNetworking.m in Sources */,

@@ -14,6 +14,7 @@
 @interface OPAbusTableViewController ()
 @property(nonatomic,strong)NSMutableArray* dataSource;
 @property (weak, nonatomic) IBOutlet UIView *errorView;
+
 @end
 
 @implementation OPAbusTableViewController
@@ -32,45 +33,24 @@
 {
 	
 	_dataSource = [NSMutableArray new];
-    [[AFHTTPRequestOperationManager AFRequest] POST:ROUTES
-										 parameters:[self getParametersWithStopName:_routeName]
-											success:^(AFHTTPRequestOperation *operation, id responseObject) {
-												
-												for(NSDictionary *routesJSON in responseObject[@"rows"])
-												{
-													OPABusRoutes *busRoute = [OPABusRoutes new];
-													busRoute.agencyId = [routesJSON[@"agencyId"] integerValue];
-													busRoute.identifier = [routesJSON[@"id"] integerValue];
-													busRoute.lastModifiedDate = routesJSON[@"lastModifiedDate"];
-													busRoute.longName = routesJSON[@"longName"];
-													busRoute.shortName = routesJSON[@"shortName"];
-													[_dataSource addObject:busRoute];
-												}
-												
-												if (_dataSource.count == 0) {
-													[_errorView setHidden:NO];
-												}else{
-													self.dataSource = _dataSource;
-													[self.tableView reloadData];
-												}
-												
-											}
-											failure:^(AFHTTPRequestOperation *operation, NSError *err) {
-												
-												[UIAlertView showErrorWithMessage:err.domain];
-											}
-     ];
+	[OPABusServicesAPI instance].delegate = self;
+	[[OPABusServicesAPI instance] getRoutes:_routeName];
+	
 }
 
--(NSDictionary*)getParametersWithStopName:(NSString*)stopName
-{
-	return @{@"params" : @{ @"stopName": [NSString stringWithFormat:@"%%%@%%",[stopName lowercaseString]]} };
+#pragma mark - OPABusServices Delegates
+
+-(void)getRoutesSuccessful:(NSMutableArray *)dataSource{
+	if (dataSource.count == 0) {
+		[_errorView setHidden:NO];
+	}else{
+		_dataSource = dataSource;
+		[self.tableView reloadData];
+	}
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)opaBusServiceAPIFailure:(NSString *)error{
+	[UIAlertView showErrorWithMessage:error];
 }
 
 #pragma mark - Table view data source

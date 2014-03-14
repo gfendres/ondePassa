@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "OPABusRoutes.h"
+#import "OPABusServicesAPI.h"
 
-@interface OPAbusDetailViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
+@interface OPAbusDetailViewController : UIViewController <UITableViewDataSource,UITableViewDelegate,OPABusServiceAPIDelegate>
 @property(nonatomic,strong)OPABusRoutes* route;
 @end
