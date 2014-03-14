@@ -13,6 +13,7 @@
 
 @interface OPAbusTableViewController ()
 @property(nonatomic,strong)NSMutableArray* dataSource;
+@property (weak, nonatomic) IBOutlet UIView *errorView;
 @end
 
 @implementation OPAbusTableViewController
@@ -45,8 +46,13 @@
 													busRoute.shortName = routesJSON[@"shortName"];
 													[_dataSource addObject:busRoute];
 												}
-												self.dataSource = _dataSource;
-												[self.tableView reloadData];
+												
+												if (_dataSource.count == 0) {
+													[_errorView setHidden:NO];
+												}else{
+													self.dataSource = _dataSource;
+													[self.tableView reloadData];
+												}
 												
 											}
 											failure:^(AFHTTPRequestOperation *operation, NSError *err) {

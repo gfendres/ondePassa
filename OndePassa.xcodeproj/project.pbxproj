@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D158683F18D2921D008A21F0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D158683E18D2921D008A21F0 /* MapKit.framework */; };
 		D15CBF0418CFED8200E2EF88 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15CBF0318CFED8200E2EF88 /* Foundation.framework */; };
 		D15CBF0618CFED8200E2EF88 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15CBF0518CFED8200E2EF88 /* CoreGraphics.framework */; };
 		D15CBF0818CFED8200E2EF88 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D15CBF0718CFED8200E2EF88 /* UIKit.framework */; };
@@ -64,6 +65,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D158683E18D2921D008A21F0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		D15CBF0018CFED8200E2EF88 /* OndePassa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OndePassa.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D15CBF0318CFED8200E2EF88 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D15CBF0518CFED8200E2EF88 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -148,6 +150,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D158683F18D2921D008A21F0 /* MapKit.framework in Frameworks */,
 				D15CBF8018D0089700E2EF88 /* MobileCoreServices.framework in Frameworks */,
 				D15CBF7E18D0081600E2EF88 /* SystemConfiguration.framework in Frameworks */,
 				D15CBF0618CFED8200E2EF88 /* CoreGraphics.framework in Frameworks */,
@@ -191,6 +194,7 @@
 		D15CBF0218CFED8200E2EF88 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D158683E18D2921D008A21F0 /* MapKit.framework */,
 				D15CBF7F18D0089700E2EF88 /* MobileCoreServices.framework */,
 				D15CBF7D18D0081600E2EF88 /* SystemConfiguration.framework */,
 				D15CBF4318CFF51400E2EF88 /* AFNetworking */,

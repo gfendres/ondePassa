@@ -13,6 +13,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" red="0.9125513229927007" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <view key="tableFooterView" hidden="YES" contentMode="scaleToFill" id="nTa-Qn-CCp">
+                            <rect key="frame" x="0.0" y="77" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No routes found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Kf-sO-NfV">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="30"/>
+                                    <color key="textColor" red="0.99215692280000001" green="0.270588249" blue="0.52156865600000002" alpha="1" colorSpace="deviceRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="busCell" rowHeight="55" id="vcp-b5-8Cf" customClass="OPARoutesCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="55"/>
@@ -54,6 +68,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Routes" id="ZGd-6E-CxL"/>
+                    <connections>
+                        <outlet property="errorView" destination="nTa-Qn-CCp" id="FNf-4N-S6W"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v45-5v-rOI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -75,10 +92,12 @@
                                     <outletCollection property="gestureRecognizers" destination="Re5-Ue-dBu" appends="YES" id="J8G-Xb-zgR"/>
                                 </connections>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="street" textAlignment="center" minimumFontSize="17" background="cellBrackground.jpg" id="9fL-sp-GVd">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="street" textAlignment="center" minimumFontSize="17" background="searchTextField" id="9fL-sp-GVd">
                                 <rect key="frame" x="20" y="143" width="280" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" red="0.99215692280000001" green="0.270588249" blue="0.52156865600000002" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="textColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="21"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -86,7 +105,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="5FZ-4Y-Ax6">
-                                <rect key="frame" x="20" y="200" width="280" height="46"/>
+                                <rect key="frame" x="117" y="200" width="87" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="26"/>
                                 <state key="normal" title="Search">
@@ -103,16 +122,37 @@
                                 <color key="textColor" red="0.23529411759999999" green="0.69803921570000005" blue="0.93725490199999995" alpha="1" colorSpace="deviceRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" id="9VG-LZ-iaj">
+                                <rect key="frame" x="0.0" y="254" width="320" height="226"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinY="YES" heightSizable="YES"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="lIs-jv-QYh">
+                                <rect key="frame" x="135" y="323" width="50" height="50"/>
+                                <state key="normal" image="mapIcon"/>
+                                <connections>
+                                    <action selector="showMapClick:" destination="VRV-lT-6cq" eventType="touchUpInside" id="Fop-p0-GEC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="CzP-fK-sts">
+                                <rect key="frame" x="20" y="426" width="33" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <state key="normal" image="localIcon"/>
+                                <connections>
+                                    <action selector="setCurrentLocation:" destination="VRV-lT-6cq" eventType="touchUpInside" id="lwU-6X-MYM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <connections>
-                            <outletCollection property="gestureRecognizers" destination="Re5-Ue-dBu" appends="YES" id="z8u-dX-qVw"/>
+                            <outletCollection property="gestureRecognizers" destination="Re5-Ue-dBu" appends="YES" id="kLW-fs-EvF"/>
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="q2r-RM-ufh"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="currentLocationButton" destination="CzP-fK-sts" id="ydL-bf-QMw"/>
+                        <outlet property="searchMapView" destination="9VG-LZ-iaj" id="4Xm-I9-tfA"/>
                         <outlet property="searchTextField" destination="9fL-sp-GVd" id="CZ4-lu-snl"/>
                     </connections>
                 </viewController>
@@ -280,7 +320,10 @@
     <resources>
         <image name="ballLines" width="30" height="30"/>
         <image name="cellBrackground.jpg" width="574" height="108"/>
+        <image name="localIcon" width="50" height="50"/>
+        <image name="mapIcon" width="50" height="50"/>
         <image name="searchBackground.jpg" width="640" height="960"/>
+        <image name="searchTextField" width="287" height="54"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
