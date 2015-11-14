@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface OPABusRoutes : NSObject
-@property(nonatomic) int agencyId;
-@property(nonatomic) int identifier;
-@property(nonatomic,strong)NSString* lastModifiedDate;
-@property(nonatomic,strong)NSString* longName;
-@property(nonatomic,strong)NSString* shortName;
+@property (nonatomic) int agencyId;
+@property (nonatomic) int identifier;
+@property (nonatomic,strong) NSString *lastModifiedDate;
+@property (nonatomic,strong) NSString *longName;
+@property (nonatomic,strong) NSString *shortName;
 @end

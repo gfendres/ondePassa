@@ -12,7 +12,8 @@
 #import "OPAbusDetailViewController.h"
 
 @interface OPAbusTableViewController ()
-@property(nonatomic,strong)NSMutableArray* dataSource;
+
+@property (nonatomic, strong) NSMutableArray *dataSource;
 @property (weak, nonatomic) IBOutlet UIView *errorView;
 
 @end
@@ -21,72 +22,63 @@
 
 #pragma mark Initialization
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	[self loadData];
+    [self loadData];
 }
 
 #pragma mark - Loads
 
--(void)loadData
-{
-	
-	_dataSource = [NSMutableArray new];
-	[OPABusServicesAPI instance].delegate = self;
-	[[OPABusServicesAPI instance] getRoutes:_routeName];
-	
+- (void)loadData {
+    
+    self.dataSource = [NSMutableArray new];
+    [OPABusServicesAPI instance].delegate = self;
+    [[OPABusServicesAPI instance] getRoutes:self.routeName];
+    
 }
 
 #pragma mark - OPABusServices Delegates
 
--(void)getRoutesSuccessful:(NSMutableArray *)dataSource{
-	if (dataSource.count == 0) {
-		[_errorView setHidden:NO];
-	}else{
-		_dataSource = dataSource;
-		[self.tableView reloadData];
-	}
+- (void)getRoutesSuccessful:(NSMutableArray *)dataSource {
+    if (dataSource.count == 0) {
+        [self.errorView setHidden:NO];
+    } else {
+        self.dataSource = dataSource;
+        [self.tableView reloadData];
+    }
 }
 
--(void)opaBusServiceAPIFailure:(NSString *)error{
-	[UIAlertView showErrorWithMessage:error];
+- (void)opaBusServiceAPIFailure:(NSString *)error {
+    [UIAlertView showErrorWithMessage:error];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _dataSource.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"busCell";
     OPARoutesCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    OPABusRoutes *route = (OPABusRoutes*)[_dataSource objectAtIndex:indexPath.row];
-	
-	cell.shortName.text = route.shortName;
-	cell.longName.text = route.longName;
+    OPABusRoutes *route = (OPABusRoutes*)[self.dataSource objectAtIndex:indexPath.row];
+    
+    cell.shortName.text = route.shortName;
+    cell.longName.text = route.longName;
     
     return cell;
 }
 
 #pragma mark - Segues
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if([segue.identifier isEqualToString:@"busDetail"])
-    {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:@"busDetail"]) {
         OPAbusDetailViewController *busDetail = (OPAbusDetailViewController *)segue.destinationViewController;
-        busDetail.route = [_dataSource objectAtIndex:[self.tableView indexPathForCell:sender].row];
+        busDetail.route = [self.dataSource objectAtIndex:[self.tableView indexPathForCell:sender].row];
     }
 }
 

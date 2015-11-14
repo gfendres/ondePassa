@@ -9,7 +9,7 @@
 #import "UIAlertView+Error.h"
 
 @implementation UIAlertView (Error)
-+(void)showErrorWithMessage:(NSString *)message{
++ (void)showErrorWithMessage:(NSString *)message {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                     message:message
                                                    delegate:nil
@@ -17,6 +17,5 @@
                                           otherButtonTitles:nil];
     
     [alert show];
-    
 }
 @end

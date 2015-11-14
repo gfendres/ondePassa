@@ -10,29 +10,29 @@
 #import "OPABusRoutes.h"
 #import "OPABusStop.h"
 #import "OPABusDepartures.h"
+
 @implementation OPABusServicesAPI
 
 + (OPABusServicesAPI *)instance {
     static OPABusServicesAPI *instance;
     
-    if (instance == nil){
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         instance = [[OPABusServicesAPI alloc] init];
-    }
-	
+    });
+    
     return instance;
 }
 
 #pragma mark - Gets
 
--(void)getRoutes:(NSString*)routeName
-{
+-(void)getRoutes:(NSString*)routeName {
 	NSMutableArray* dataSource = [NSMutableArray new];
 	[[AFHTTPRequestOperationManager AFRequest] POST:ROUTES
 										 parameters:[self getParametersWithStopName:routeName]
 											success:^(AFHTTPRequestOperation *operation, id responseObject) {
 												
-												for(NSDictionary *routesJSON in responseObject[@"rows"])
-												{
+												for(NSDictionary *routesJSON in responseObject[@"rows"]) {
 													OPABusRoutes *busRoute = [OPABusRoutes new];
 													busRoute.agencyId = [routesJSON[@"agencyId"] integerValue];
 													busRoute.identifier = [routesJSON[@"id"] integerValue];
@@ -44,8 +44,7 @@
 												[self performSelectorOnMainThread:@selector(successfulRoutesCallback:)
 																	   withObject:dataSource waitUntilDone:NO];
 												
-											}
-											failure:^(AFHTTPRequestOperation *operation, NSError *err) {
+											} failure:^(AFHTTPRequestOperation *operation, NSError *err) {
 
 												[self performSelectorOnMainThread:@selector(failureCallback:)
 																	   withObject:err waitUntilDone:NO];
@@ -54,15 +53,13 @@
 	
 }
 
--(void)getStops:(int)routeId
-{
+-(void)getStops:(int)routeId {
 	NSMutableArray *stopsDataSource = [NSMutableArray new];
 	[[AFHTTPRequestOperationManager AFRequest] POST:STOPS
 										 parameters:[self getParamteresWithRouteId:routeId]
 											success:^(AFHTTPRequestOperation *operation, id responseObject) {
 												
-												for(NSDictionary *stopJSON in responseObject[@"rows"])
-												{
+												for(NSDictionary *stopJSON in responseObject[@"rows"]) {
 													OPABusStop* busStop = [OPABusStop new];
 													busStop.identifier = [stopJSON[@"id"] integerValue];
 													busStop.name = stopJSON[@"name"];
@@ -82,8 +79,7 @@
      ];
 }
 
--(void)getDepartures:(int)routeId
-{
+-(void)getDepartures:(int)routeId {
 	
 	NSMutableArray* departuresDataSource = [NSMutableArray new];
     [[AFHTTPRequestOperationManager AFRequest] POST:DEPARTURES
@@ -114,13 +110,11 @@
 
 #pragma mark - Get Parameters
 
--(NSDictionary*)getParametersWithStopName:(NSString*)stopName
-{
+-(NSDictionary*)getParametersWithStopName:(NSString*)stopName {
 	return @{@"params" : @{ @"stopName": [NSString stringWithFormat:@"%%%@%%",[stopName lowercaseString]]} };
 }
 
--(NSDictionary*)getParamteresWithRouteId:(int)routeId
-{
+-(NSDictionary*)getParamteresWithRouteId:(int)routeId {
 	return @{@"params" : @{ @"routeId": [NSString stringWithFormat:@"%d",routeId] } };
 }
 
@@ -128,34 +122,31 @@
 
 - (void)successfulRoutesCallback:(NSMutableArray*)dataSource {
 	
-	if([_delegate conformsToProtocol:@protocol(OPABusServiceAPIDelegate)]) {
-		[_delegate getRoutesSuccessful:dataSource];
+	if([self.delegate conformsToProtocol:@protocol(OPABusServiceAPIDelegate)]) {
+		[self.delegate getRoutesSuccessful:dataSource];
 	}
-	
 }
 
 - (void)successfulStopsCallback:(NSMutableArray*)dataSource {
 	
-	if([_delegate conformsToProtocol:@protocol(OPABusServiceAPIDelegate)]) {
-		[_delegate getStopsSuccessful:dataSource];
+	if([self.delegate conformsToProtocol:@protocol(OPABusServiceAPIDelegate)]) {
+		[self.delegate getStopsSuccessful:dataSource];
 	}
 	
 }
 
 - (void)successfulDeparturesCallback:(NSMutableArray*)dataSource {
 	
-	if([_delegate conformsToProtocol:@protocol(OPABusServiceAPIDelegate)]) {
-		[_delegate getDeparturesSuccessful:dataSource];
+	if([self.delegate conformsToProtocol:@protocol(OPABusServiceAPIDelegate)]) {
+		[self.delegate getDeparturesSuccessful:dataSource];
 	}
-	
 }
 
 - (void)failureCallback:(NSString*)error {
 	
-	if([_delegate conformsToProtocol:@protocol(OPABusServiceAPIDelegate)]) {
-		[_delegate opaBusServiceAPIFailure:error];
+	if([self.delegate conformsToProtocol:@protocol(OPABusServiceAPIDelegate)]) {
+		[self.delegate opaBusServiceAPIFailure:error];
 	}
-	
 }
 
 @end

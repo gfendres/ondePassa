@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UIAlertView (Error)
-+(void)showErrorWithMessage:(NSString *)message;
++( void)showErrorWithMessage:(NSString *)message;
 @end

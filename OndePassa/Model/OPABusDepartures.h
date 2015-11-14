@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface OPABusDepartures : NSObject
-@property(nonatomic,strong)NSString* calendar;
-@property(nonatomic)int identifier;
-@property(nonatomic,strong)NSString* time;
+@property (nonatomic,strong )NSString *calendar;
+@property (nonatomic) int identifier;
+@property (nonatomic,strong) NSString *time;
 @end

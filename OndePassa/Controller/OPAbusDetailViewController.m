@@ -9,16 +9,19 @@
 #import "OPAbusDetailViewController.h"
 #import "OPABusStop.h"
 #import "OPABusDepartures.h"
-#define CELL_STOP_NAME 1
+
+static const int kCellStopTag = 1;
+static const int kScrollMarginRight = 30;
 
 @interface OPAbusDetailViewController ()
+
 @property (weak, nonatomic) IBOutlet UITableView *stopsTableView;
-@property (nonatomic,strong)NSMutableArray* stops;
+@property (nonatomic,strong) NSMutableArray *stops;
 @property (weak, nonatomic) IBOutlet UILabel *weekDepartures;
 @property (weak, nonatomic) IBOutlet UILabel *sundayDepartures;
 @property (weak, nonatomic) IBOutlet UILabel *saturdayDepartures;
 @property (weak, nonatomic) IBOutlet UIScrollView *departuresScrollView;
-@property(nonatomic,strong)NSMutableArray* departures;
+@property (nonatomic,strong) NSMutableArray *departures;
 
 @end
 
@@ -27,46 +30,40 @@
 
 #pragma mark Initialization
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 	[OPABusServicesAPI instance].delegate = self;
 	[self loadData];
-	self.title = _route.longName;
+	self.title = self.route.longName;
 }
 
 #pragma Load methods
 
--(void)loadData
-{
+- (void)loadData {
 	[self loadStops];
 	[self loadDepartures];
 }
 
--(void)loadStops
-{
-	_stops = [NSMutableArray new];
-	[[OPABusServicesAPI instance] getStops:_route.identifier];
+- (void)loadStops {
+	self.stops = [NSMutableArray new];
+	[[OPABusServicesAPI instance] getStops:self.route.identifier];
 }
 
--(void)loadDepartures
-{
-	_departures = [NSMutableArray new];
-	[[OPABusServicesAPI instance] getDepartures:_route.identifier];
+- (void)loadDepartures {
+	self.departures = [NSMutableArray new];
+	[[OPABusServicesAPI instance] getDepartures:self.route.identifier];
 }
 
--(void)organizeDepartures
-{
-	[self initDepartureLabel:_weekDepartures withDayType:@"WEEKDAY"];
-	[self initDepartureLabel:_saturdayDepartures withDayType:@"SATURDAY"];
-	[self initDepartureLabel:_sundayDepartures withDayType:@"SUNDAY"];
+- (void)organizeDepartures {
+	[self initDepartureLabel:self.weekDepartures withDayType:@"WEEKDAY"];
+	[self initDepartureLabel:self.saturdayDepartures withDayType:@"SATURDAY"];
+	[self initDepartureLabel:self.sundayDepartures withDayType:@"SUNDAY"];
 }
 
--(void)initDepartureLabel:(UILabel*)departureLabel withDayType:(NSString*)dayType
-{
+- (void)initDepartureLabel:(UILabel*)departureLabel withDayType:(NSString*)dayType {
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"calendar = '%@'",dayType]];
-	for (OPABusDepartures* departures in [_departures filteredArrayUsingPredicate:predicate]) {
+	for (OPABusDepartures* departures in [self.departures filteredArrayUsingPredicate:predicate]) {
 		departureLabel.text = [NSString stringWithFormat:@"%@ %@ %@",
 							   departureLabel.text,
 							   [departureLabel.text  isEqual: @""] ? @"" : @"-",
@@ -81,54 +78,45 @@
 	[self organizeDepartureScrollViewBasedOnLabel:departureLabel];
 }
 
-#define SCROLL_MARGIN_RIGHT 30
--(void)organizeDepartureScrollViewBasedOnLabel:(UILabel*)label
-{
-	if(_departuresScrollView.contentSize.width < label.frame.size.width){
-		[_departuresScrollView setContentSize:CGSizeMake(label.frame.size.width + SCROLL_MARGIN_RIGHT,
-														 _departuresScrollView.frame.size.height)];
+-(void)organizeDepartureScrollViewBasedOnLabel:(UILabel*)label {
+	if(self.departuresScrollView.contentSize.width < label.frame.size.width){
+		[self.departuresScrollView setContentSize:CGSizeMake(label.frame.size.width + kScrollMarginRight,
+                                                             self.departuresScrollView.frame.size.height)];
 	}
 }
 
 #pragma mark - OPABusServices Delegates
 
--(void)getStopsSuccessful:(NSMutableArray *)dataSource{
-	_stops = dataSource;
-	[_stopsTableView reloadData];
+- (void)getStopsSuccessful:(NSMutableArray *)dataSource{
+	self.stops = dataSource;
+	[self.stopsTableView reloadData];
 }
 
--(void)getDeparturesSuccessful:(NSMutableArray *)dataSource{
-	_departures = dataSource;
+- (void)getDeparturesSuccessful:(NSMutableArray *)dataSource{
+	self.departures = dataSource;
 	[self organizeDepartures];
 }
 
--(void)opaBusServiceAPIFailure:(NSString *)error{
+- (void)opaBusServiceAPIFailure:(NSString *)error{
 	[UIAlertView showErrorWithMessage:error];
 }
 
-
 #pragma mark - Table view data source
 
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return _stops.count;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.stops.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"stopCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     OPABusStop *stop = (OPABusStop*)[_stops objectAtIndex:indexPath.row];
 	
-	UILabel* stopName = (UILabel*)[cell viewWithTag:CELL_STOP_NAME];
+	UILabel* stopName = (UILabel*)[cell viewWithTag:kCellStopTag];
 	stopName.text = stop.name;
     return cell;
 }

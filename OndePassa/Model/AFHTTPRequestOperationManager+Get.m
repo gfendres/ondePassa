@@ -11,8 +11,7 @@
 #define PASSWORD @"DtdTtzMLQlA0hk2C1Yi5pLyVIlAQ68"
 
 @implementation AFHTTPRequestOperationManager (Get)
-+(AFHTTPRequestOperationManager*)AFRequest
-{
++ (AFHTTPRequestOperationManager*)AFRequest {
 	NSURL *url = [NSURL URLWithString:ROOT_URL];
     AFHTTPRequestOperationManager *operation = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];
 	

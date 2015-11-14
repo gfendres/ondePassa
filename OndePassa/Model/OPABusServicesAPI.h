@@ -14,17 +14,16 @@
 - (void)getRoutesSuccessful:(NSMutableArray*)dataSource;
 - (void)getStopsSuccessful:(NSMutableArray*)dataSource;
 - (void)getDeparturesSuccessful:(NSMutableArray*)dataSource;
-
 - (void)opaBusServiceAPIFailure:(NSString*)error;
-
 @end
 
 @interface OPABusServicesAPI : NSObject
 
-+ (OPABusServicesAPI *)instance;
--(void)getRoutes:(NSString*)routeName;
--(void)getStops:(int)routeId;
--(void)getDepartures:(int)routeId;
 @property (nonatomic, weak) NSObject<OPABusServiceAPIDelegate> *delegate;
+
++ (OPABusServicesAPI *)instance;
+- (void)getRoutes:(NSString*)routeName;
+- (void)getStops:(int)routeId;
+- (void)getDepartures:(int)routeId;
 
 @end

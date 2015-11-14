@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface OPABusStop : NSObject
-@property(nonatomic)int identifier;
-@property(nonatomic,strong)NSString* name;
-@property(nonatomic)int sequence;
+@property (nonatomic) int identifier;
+@property (nonatomic,strong) NSString *name;
+@property (nonatomic) int sequence;
 @end
